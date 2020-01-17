@@ -1,0 +1,19 @@
+doctype html
+html(lang='pt-br')
+    head
+        meta(charset='UTF-8')
+        title Aplicacao
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js")
+    body
+        - var faces = ['left', 'right', 'top', 'bottom', 'back', 'front'], pieces = 26
+            #scene.scene
+                #pivot.pivot.centered(style = 'transform: rotateX(-35deg) rotateY(-135deg);')
+                    #cube.cube
+                        while pieces--
+                            .piece
+                                each face in faces
+                                    div(class = 'element ' + face)
+            #guide
+                - var n = 4
+                    while n--
+                        div(id = 'anchor' + n class = 'anchor' style = 'transform: translateZ(3px) translateY(-33.33%) rotate(' + (-90 * n) + 'deg) translateY(66.67%)')
