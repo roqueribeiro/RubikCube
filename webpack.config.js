@@ -4,7 +4,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const config = {
-    entry: ['./src/app.js', './src/style.scss'],
+    entry: ['./src/app.js', './src/reset.scss', './src/style.scss'],
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: "[name]-[hash].js",
