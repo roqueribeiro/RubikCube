@@ -87,9 +87,22 @@ body {
             @each $face,
             $angles in $faces {
                 &.#{$face} {
+                    cursor: grabbing;
+                    transition: .2s;
                     transform: rotateX + '('+ nth($angles, 1) + 'deg)'
-                        rotateY + '('+ nth($angles, 2) + 'deg)'
-                        rotateZ + '('+ nth($angles, 3) + 'deg)'translateZ($element-size / 2);
+                               rotateY + '('+ nth($angles, 2) + 'deg)'
+                               rotateZ + '('+ nth($angles, 3) + 'deg)'
+                               translateZ($element-size / 2);
+
+                    &:hover {
+                        background: white;
+                        box-shadow: 0 0 20px rgba(white, .30);
+                    }
+
+                    &:active {
+                        background: red;
+                        box-shadow: 0 0 5px rgba(red, .80);
+                    }
                 }
             }
 
