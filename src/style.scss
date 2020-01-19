@@ -19,6 +19,8 @@ $colors: (blue: #005DA9,
 
 html,
 body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: medium;
     height: 100%;
     overflow: hidden;
     user-select: none;
@@ -29,6 +31,42 @@ body {
         color: $ground-color;
         blend-mode: overlay;
     }
+}
+
+nav {
+    position: fixed;
+    width: 100%;
+    height: auto;
+    top: 0;
+    z-index: 999;
+    text-align: center;
+}
+
+.btn {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 5px;
+    background: white;
+    border-radius: 4px;
+    border: 1px map-get($colors, blue) solid;
+    color: map-get($colors, blue);
+    transition: .3s;
+
+    &:hover {
+        border: 1px map-get($colors, green) solid;
+        color: map-get($colors, green);
+    }
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
 }
 
 .centered {

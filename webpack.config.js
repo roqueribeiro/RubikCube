@@ -27,7 +27,7 @@ const config = {
             use: ['pug-loader']
         }, {
             test: /\.s?css$/,
-            exclude: /node_modules/, 
+            exclude: /node_modules/,
             use: [
                 MiniCssExtractPlugin.loader,
                 'css-loader',
@@ -42,6 +42,7 @@ const config = {
                 'postcss-loader'
             ]
         }, {
+            type: 'javascript/auto',
             test: /\.(png|svg|jpg|gif)$/,
             use: ['file-loader']
         }]

@@ -2,6 +2,10 @@ const colors = ['blue', 'green', 'white', 'yellow', 'orange', 'red'],
     pieces = document.getElementsByClassName('piece'),
     socket = io('https://mobi.iwantproject.com.br');
 
+var socketEmit = (data) => {
+    socket.emit('data', data);
+}
+
 var mx = (i, j) => {
     return ([2, 4, 3, 5][j % 4 | 0] + i % 2 * ((j | 0) % 4 * 2 + 3) + 2 * (i / 2 | 0)) % 6;
 }
@@ -11,7 +15,7 @@ var getAxis = (face) => {
 }
 
 var assembleCube = () => {
-    var moveto = (face) => {
+    var moveTo = (face) => {
         id = id + (1 << face);
         pieces[i].children[face]
             .appendChild(document.createElement('div'))
@@ -20,14 +24,15 @@ var assembleCube = () => {
     }
     for (var id, x, i = 0; id = 0, i < 26; i++) {
         x = mx(i, i % 18);
-        pieces[i].style.transform = 'rotateX(0deg)' + moveto(i % 6) + (i > 5 ? moveto(x) + (i > 17 ? moveto(mx(x, x + 2)) : '') : '');
+        let mv = moveTo(i % 6) + (i > 5 ? moveTo(x) + (i > 17 ? moveTo(mx(x, x + 2)) : '') : '');
+        pieces[i].style.transform = 'rotateX(0deg)' + mv;
         pieces[i].setAttribute('id', 'piece' + id);
     }
 }
 
 var getPieceBy = (face, index, corner) => {
-    return document.getElementById('piece' +
-        ((1 << face) + (1 << mx(face, index)) + (1 << mx(face, index + 1)) * corner));
+    let id = ((1 << face) + (1 << mx(face, index)) + (1 << mx(face, index + 1)) * corner);
+    return document.getElementById('piece' + id);
 }
 
 var swapPieces = (face, times) => {
@@ -73,7 +78,7 @@ var mousedown = (md_e) => {
             if (gid && gid.input.includes('anchor')) {
                 mouseup();
                 var e = element.parentNode.children[mx(face, Number(gid) + 3)].hasChildNodes();
-                socket.emit('data', {
+                socketEmit({
                     app: 'rubik',
                     action: 'move_piece',
                     content: {
@@ -84,7 +89,7 @@ var mousedown = (md_e) => {
                 });
             }
         } else {
-            socket.emit('data', {
+            socketEmit({
                 app: 'rubik',
                 action: 'move_cube',
                 content: {
@@ -99,10 +104,8 @@ var mousedown = (md_e) => {
         document.body.appendChild(guide);
         scene.removeEventListener('mousemove', mousemove);
         scene.removeEventListener('touchmove', mousemove);
-
         document.removeEventListener('mouseup', mouseup);
         document.removeEventListener('touchend', mouseup);
-
         scene.addEventListener('mousedown', mousedown);
         scene.addEventListener('touchstart', mousedown);
     }
@@ -110,7 +113,6 @@ var mousedown = (md_e) => {
     (element || document.body).appendChild(guide);
     scene.addEventListener('mousemove', mousemove);
     scene.addEventListener('touchmove', mousemove);
-
     document.addEventListener('mouseup', mouseup);
     document.addEventListener('touchend', mouseup);
 }
@@ -120,9 +122,37 @@ document.ondragstart = () => {
 }
 
 window.addEventListener('load', assembleCube);
-
 scene.addEventListener('mousedown', mousedown);
 scene.addEventListener('touchstart', mousedown);
+
+var randomize = () => {
+
+    var overlay = document.createElement('div')
+    document.body.appendChild(overlay).setAttribute('class', 'overlay');
+
+    var times = 10;
+    for (var i = 0; i < times; i++) {
+        ((j) => {
+            setTimeout(() => {
+                socketEmit({
+                    app: 'rubik',
+                    action: 'move_piece',
+                    content: {
+                        mx: Math.floor(Math.random() * 6),
+                        el: Math.random() >= 0.5,
+                        timestamp: Math.floor(Date.now() * Math.random())
+                    }
+                });
+                if (times === j + 1) {
+                    document.body.removeChild(overlay);
+                }
+            }, i * 80);
+        })(i);
+    }
+}
+
+var randomizeButton = document.getElementById('randomize');
+randomizeButton.addEventListener('click', randomize, false);
 
 socket.on('data', (data) => {
     if (data.app != 'rubik') return;

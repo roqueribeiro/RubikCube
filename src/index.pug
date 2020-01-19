@@ -15,8 +15,10 @@ html(lang='pt-br')
         meta(name='msapplication-TileColor' content='#E5E5E5')
         meta(name='theme-color' content='#E5E5E5')
         title Rubik Cube
-        script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js")
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js')
     body
+        nav
+            a#randomize.btn.center(href='javascript:void(0);') Randomize
         - var faces = ['left', 'right', 'top', 'bottom', 'back', 'front'], pieces = 26
             #scene.scene
                 #pivot.pivot.centered(style = 'transform: rotateX(-35deg) rotateY(-135deg);')
