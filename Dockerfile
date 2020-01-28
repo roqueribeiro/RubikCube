@@ -19,4 +19,4 @@ RUN npm run build
 
 # Show current folder structure in logs
 # RUN ls -al -R
-CMD [ "pm2-runtime", "start", "pm2.json" ]
+CMD [ "pm2-runtime", "restart", "pm2.json" ]
