@@ -1,6 +1,6 @@
 const colors = ['blue', 'green', 'white', 'yellow', 'orange', 'red'],
     pieces = document.getElementsByClassName('piece'),
-    socket = io('https://mobi.iwantproject.com.br');
+    socket = io('https://api.chatao.com.br');
 
 var socketEmit = (data) => {
     socket.emit('data', data);
